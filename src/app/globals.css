@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
-:root { --navy: #063c27; --navy-soft: #075637; --ivory: #faf5ea; --paper: #fffaf1; --emerald: #075b37; --emerald-light: #e2ecdf; --gold: #bf9456; --ink: #153629; --muted: #69766b; --line: #e5d5bd; --red: #ce263c; }
+@font-face { font-family: "Cairo"; src: url("/fonts/Cairo-VariableFont_slnt,wght.ttf") format("truetype"); font-weight: 200 1000; font-style: normal; font-display: swap; }
+@font-face { font-family: "Amiri"; src: url("/fonts/Amiri-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Amiri"; src: url("/fonts/Amiri-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+
+@theme { --font-sans: "Cairo", Tahoma, Arial, sans-serif; --font-serif: "Amiri", "Cairo", Tahoma, serif; }
+
+:root { --navy: #063c27; --navy-soft: #075637; --ivory: #faf5ea; --paper: #fffaf1; --emerald: #075b37; --emerald-light: #e2ecdf; --gold: #bf9456; --ink: #153629; --muted: #69766b; --line: #e5d5bd; --red: #ce263c; --font-body: "Cairo", Tahoma, Arial, sans-serif; --font-brand: "Amiri", "Cairo", Tahoma, serif; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: radial-gradient(circle at 85% 22%, rgba(191,148,86,.09), transparent 24rem), var(--ivory); color: var(--ink); font-family: "Segoe UI", Tahoma, Arial, sans-serif; }
+body { margin: 0; background: radial-gradient(circle at 85% 22%, rgba(191,148,86,.09), transparent 24rem), var(--ivory); color: var(--ink); font-family: var(--font-body); }
 button, input, textarea, select { font: inherit; }
 button, a, input, textarea, select { outline-offset: 3px; }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid #c69a38; }
@@ -15,7 +21,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .gold-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--gold); box-shadow: 0 0 0 6px rgba(191,148,86,.14); }
 .site-ribbon { display: grid; grid-template-columns: 1fr 1fr 1fr; height: 4px; background: var(--red); }.site-ribbon span:first-child { background: #075b37; }.site-ribbon span:nth-child(2) { background: #08a869; }
 .site-header { position: sticky; top: 0; z-index: 50; background: rgba(250,245,234,.94); border-bottom: 1px solid rgba(191,148,86,.22); backdrop-filter: blur(16px); box-shadow: 0 8px 26px rgba(29,45,30,.05); }
-.brand-mark { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(191,148,86,.5); border-radius: 14px; background: #fffaf1; color: var(--emerald); font-size: 1.35rem; font-weight: 900; box-shadow: 0 7px 15px rgba(36,59,39,.09); }.brand-mark::after { content: "✦"; position: absolute; margin: -32px 29px 0 0; color: var(--red); font-size: .75rem; }
+.brand-mark { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(191,148,86,.5); border-radius: 14px; background: #fffaf1; color: var(--emerald); font-family: var(--font-brand); font-size: 1.65rem; font-weight: 700; line-height: 1; box-shadow: 0 7px 15px rgba(36,59,39,.09); }.brand-mark::after { content: "✦"; position: absolute; margin: -32px 29px 0 0; color: var(--red); font-family: var(--font-body); font-size: .75rem; }
 .nav-link { color: #5e655e; text-decoration: none; font-size: .86rem; font-weight: 750; padding: .55rem .85rem; border-radius: 999px; transition: color .2s, background .2s, box-shadow .2s; }
 .nav-link:hover, .nav-link[aria-current="page"] { color: white; background: var(--emerald); box-shadow: 0 5px 10px rgba(7,91,55,.2); }
 .nav-capsule { display: flex; align-items: center; gap: .1rem; padding: .28rem; border: 1px solid rgba(191,148,86,.36); border-radius: 999px; background: rgba(255,250,241,.82); }
