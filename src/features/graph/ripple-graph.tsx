@@ -1,0 +1,24 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { Background, Controls, Handle, MiniMap, Position, ReactFlow, type Edge, type Node, type NodeProps } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { getArticle, getLegislation } from "@/data/demo-legislation";
+import type { AtharAnalysis, LegislativeArticle, RelationType } from "@/types/legislative";
+
+const relationLabel: Record<RelationType, string> = { direct_reference: "مرجع مباشر", definition: "تعريف", dependency: "اعتماد", possible_conflict: "تعارض محتمل", related: "ارتباط" };
+const typeLabel: Record<LegislativeArticle["type"], string> = { law: "تشريع", regulation: "نظام", instruction: "تعليمات", procedure: "إجراء" };
+function ArticleNode({ data, selected }: NodeProps<Node<{ label: string; type: LegislativeArticle["type"]; focus?: boolean }>>) { return <div className={`min-w-27 rounded-xl border p-3 text-right shadow-sm ${data.focus ? "border-[#d6ad4f] bg-[#173a52] text-white" : "border-[#cbd9d5] bg-[#fffdf9] text-[#142c3d]"} ${selected ? "ring-2 ring-[#0d7a67]" : ""}`}><Handle type="target" position={Position.Right} className="!bg-[#0d7a67]" /><span className="block text-[10px] font-bold opacity-70">{typeLabel[data.type]}</span><strong className="mt-1 block text-xs">{data.label}</strong><Handle type="source" position={Position.Left} className="!bg-[#c69a38]" /></div>; }
+
+export function RippleGraph({ analysis }: { analysis: AtharAnalysis }) {
+  const [selectedId, setSelectedId] = useState(analysis.targetArticleId);
+  const { nodes, edges } = useMemo(() => {
+    const articles = analysis.impactedArticleIds.map(getArticle).filter((article): article is LegislativeArticle => Boolean(article));
+    const selected = getArticle(analysis.targetArticleId);
+    const nodes: Node[] = articles.map((article, index) => ({ id: article.id, type: "article", position: article.id === analysis.targetArticleId ? { x: 310, y: 150 } : { x: 40 + (index % 2) * 530, y: 25 + Math.floor(index / 2) * 130 }, data: { label: `مادة ${article.articleNumber}: ${article.title}`, type: article.type, focus: article.id === analysis.targetArticleId } }));
+    const edges: Edge[] = selected ? selected.relatedArticles.filter((relation) => articles.some((article) => article.id === relation.articleId)).map((relation) => ({ id: `${selected.id}-${relation.articleId}`, source: selected.id, target: relation.articleId, label: relationLabel[relation.relation], animated: true, style: { stroke: relation.relation === "possible_conflict" ? "#d35d51" : "#0d7a67", strokeWidth: 1.7 }, labelStyle: { fill: "#40505b", fontSize: 10, fontWeight: 700 }, labelBgStyle: { fill: "#f8f5ef", fillOpacity: .92 } })) : [];
+    return { nodes, edges };
+  }, [analysis]);
+  const article = getArticle(selectedId) ?? getArticle(analysis.targetArticleId)!; const legislation = getLegislation(article.legislationId);
+  return <section className="card overflow-hidden"><div className="border-b border-[var(--line)] p-5 sm:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="eyebrow">ATHAR RIPPLE / الأثر المتسلسل</p><h2 className="mt-1 text-xl font-black">شبكة التشريعات التفاعلية</h2></div><span className="tag tag-demo">مصدر العلاقات: Dataset تجريبي</span></div><p className="mt-2 text-sm text-[var(--muted)]">اضغط على أي مادة لاستكشاف سبب ظهورها وصلتها بالنص المعدل.</p></div><div className="grid lg:grid-cols-[1fr_300px]"><div className="h-115 min-w-0 bg-[#f7f8f5]" aria-label="رسم علاقات تشريعية"><ReactFlow nodes={nodes} edges={edges} nodeTypes={{ article: ArticleNode }} fitView minZoom={0.35} maxZoom={1.8} onNodeClick={(_, node) => setSelectedId(node.id)} proOptions={{ hideAttribution: true }}><Background gap={20} size={1} color="#dce6e1" /><Controls showInteractive={false} /><MiniMap nodeColor="#0d7a67" pannable zoomable /></ReactFlow></div><aside className="border-t border-[var(--line)] bg-[#fffdf9] p-5 lg:border-t-0 lg:border-r"><span className="tag bg-[#e4f2ec] text-[#086653]">{typeLabel[article.type]}</span><h3 className="mt-3 font-black">مادة {article.articleNumber}: {article.title}</h3><p className="mt-3 text-sm leading-7 text-[var(--muted)]">{article.text}</p><dl className="mt-5 space-y-3 border-t border-[var(--line)] pt-4 text-xs"><div><dt className="font-bold text-[var(--navy)]">التشريع</dt><dd className="mt-1 text-[var(--muted)]">{legislation?.title}</dd></div><div><dt className="font-bold text-[var(--navy)]">المصدر</dt><dd className="mt-1 text-[var(--muted)]">{article.source.label}</dd></div></dl></aside></div></section>;
+}
