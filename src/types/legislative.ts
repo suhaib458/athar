@@ -12,6 +12,18 @@ export interface ArticleRelation {
   reason: string;
 }
 
+export type EvidenceSourceType = "article" | "definition" | "procedure" | "rule";
+
+export interface Evidence {
+  id: string;
+  sourceId: string;
+  sourceType: EvidenceSourceType;
+  excerpt: string;
+  sourceLabel: string;
+  sourceUrl?: string;
+  isOfficial: boolean;
+}
+
 export interface LegislativeArticle {
   id: string;
   legislationId: string;
@@ -37,9 +49,14 @@ export interface Legislation {
 export type AlertType =
   | "potential_conflict"
   | "undefined_term"
+  | "definition_mismatch"
   | "broken_reference"
-  | "duplicate"
-  | "dependency";
+  | "duplicate_provision"
+  | "dependency"
+  | "obligation_change"
+  | "authority_overlap"
+  | "temporal_conflict"
+  | "compliance_impact";
 export type Severity = "info" | "warning" | "critical";
 
 export interface AtharAlert {
@@ -50,6 +67,39 @@ export interface AtharAlert {
   explanation: string;
   confidence: number;
   sourceArticleIds: string[];
+  evidenceIds: string[];
+}
+
+export type ComplianceImpactType =
+  | "obligation_change"
+  | "authority_change"
+  | "deadline_change"
+  | "procedure_change"
+  | "definition_change"
+  | "policy_update_required";
+
+export interface ComplianceImpact {
+  id: string;
+  type: ComplianceImpactType;
+  title: string;
+  explanation: string;
+  affectedEntity?: string;
+  affectedProcedure?: string;
+  affectedDeadline?: string;
+  priority: "low" | "medium" | "high";
+  sourceArticleIds: string[];
+  evidenceIds: string[];
+  reviewStatus: "needs_review" | "reviewed";
+}
+
+export interface AnalysisInput {
+  targetArticleId: string;
+  currentText: string;
+  proposedText: string;
+}
+
+export interface AnalysisProvider {
+  analyze(input: AnalysisInput): Promise<AtharAnalysis>;
 }
 
 export interface AtharAnalysis {
@@ -62,6 +112,8 @@ export interface AtharAnalysis {
   impactedArticleIds: string[];
   impactedLegislationIds: string[];
   alerts: AtharAlert[];
+  complianceImpacts: ComplianceImpact[];
+  evidence: Evidence[];
   summary: string;
   createdAt: string;
 }

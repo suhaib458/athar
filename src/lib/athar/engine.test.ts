@@ -17,4 +17,15 @@ describe("AtharEngine", () => {
     const result = atharEngine.analyze({ ...retentionDemo, proposedText: "تطبق أحكام المادة 99 على الاحتفاظ بالبيانات." });
     expect(result.alerts.some((item) => item.type === "broken_reference")).toBe(true);
   });
+  it("creates compliance impacts with evidence when the retention duration changes", () => {
+    const result = atharEngine.analyze(retentionDemo);
+    expect(result.complianceImpacts.length).toBeGreaterThanOrEqual(3);
+    expect(result.alerts.some((item) => item.type === "compliance_impact")).toBe(true);
+    expect(result.complianceImpacts.every((item) => item.evidenceIds.length > 0)).toBe(true);
+  });
+  it("does not expose a legal finding without an article source or evidence", () => {
+    const result = atharEngine.analyze(retentionDemo);
+    expect(result.alerts.every((item) => item.sourceArticleIds.length > 0 && item.evidenceIds.length > 0)).toBe(true);
+    expect(result.evidence.every((item) => item.sourceId.length > 0)).toBe(true);
+  });
 });

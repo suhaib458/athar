@@ -6,8 +6,6 @@ import { usePathname } from "next/navigation";
 const navItems = [
   { href: "/", label: "الرئيسية", icon: "⌂" },
   { href: "/analyze", label: "حلّل", icon: "⌁" },
-  { href: "/citizen", label: "اشرحلي حقي", icon: "◌" },
-  { href: "/copilot", label: "المساعد", icon: "✦" },
 ];
 
 export function SiteNav() {
