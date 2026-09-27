@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +17,7 @@ export function SiteNav() {
       <div className="site-ribbon" aria-hidden><span /><span /><span /></div>
       <div className="shell flex h-[76px] items-center justify-between gap-4 sm:gap-6">
         <Link href="/" className="flex items-center gap-3 text-[var(--ink)] no-underline" aria-label="أثَر - الصفحة الرئيسية">
-          <span className="brand-mark">أ</span>
+          <span className="brand-mark"><Image src="/athar-logo.png" alt="شعار أثَر" fill sizes="44px" priority className="brand-logo-image" /></span>
           <span><strong className="block text-base leading-4">أثَر</strong><small className="text-[10px] font-bold tracking-[.16em] text-[var(--emerald)]">ATHAR AI</small></span>
         </Link>
         <nav className="desktop-nav nav-capsule" aria-label="التنقل الرئيسي">
