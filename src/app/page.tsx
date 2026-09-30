@@ -12,12 +12,16 @@ const features = [
 
 export default function Home() {
   return <main className="bottom-space overflow-hidden">
-    <section className="hero-reference premium-hero py-16 sm:py-24">
+    <section className="hero-reference hero-video-active premium-hero py-16 sm:py-24">
+      <video className="hero-background-video" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" tabIndex={-1}>
+        <source src="/videos/athar-hero-bg.mp4" type="video/mp4" />
+      </video>
+      <div className="hero-video-overlay" aria-hidden />
       <div className="hero-data-layer" aria-hidden><span /><span /><span /><i /><i /><i /></div>
       <div className="grid-pattern absolute inset-0" /><div className="absolute -left-28 top-8 size-80 rounded-full bg-[var(--emerald)] opacity-10 blur-3xl" /><div className="absolute bottom-0 right-0 size-80 rounded-full bg-[#c69a38] opacity-10 blur-3xl" />
       <div className="hero-frame" aria-hidden><span /><span /><span /><span /></div>
       <div className="shell relative max-w-4xl">
-        <MotionReveal><div className="mx-auto max-w-3xl text-center"><div className="mb-7 flex items-center justify-center gap-3"><span className="gold-dot" /><span className="text-sm font-bold text-[#214936]">ذكاء تشريعي قابل للتفسير</span></div>
+        <MotionReveal><div className="hero-content mx-auto max-w-3xl text-center"><div className="mb-7 flex items-center justify-center gap-3"><span className="gold-dot" /><span className="text-sm font-bold text-[#214936]">ذكاء تشريعي قابل للتفسير</span></div>
           <p className="mb-3 text-lg font-bold">أثَر <span className="mr-2 text-xs tracking-[.22em]">ATHAR AI</span></p>
           <h1 className="mx-auto max-w-3xl text-[clamp(3.1rem,8vw,6.7rem)] font-black leading-[.96] tracking-[-.075em]">من النص<br /><span className="text-[#e9c76b]">إلى الأثر</span></h1>
           <p className="mx-auto mt-8 max-w-xl text-lg leading-8 text-[#214936] sm:text-xl">قبل أن يتغير النص، اعرف ما الذي سيتغير معه. أثَر يحلل أثر التعديل ويربط كل إشارة بدليل.</p>
