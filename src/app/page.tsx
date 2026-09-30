@@ -15,6 +15,7 @@ export default function Home() {
     <section className="hero-reference premium-hero py-16 sm:py-24">
       <div className="hero-data-layer" aria-hidden><span /><span /><span /><i /><i /><i /></div>
       <div className="grid-pattern absolute inset-0" /><div className="absolute -left-28 top-8 size-80 rounded-full bg-[var(--emerald)] opacity-10 blur-3xl" /><div className="absolute bottom-0 right-0 size-80 rounded-full bg-[#c69a38] opacity-10 blur-3xl" />
+      <div className="hero-frame" aria-hidden><span /><span /><span /><span /></div>
       <div className="shell relative max-w-4xl">
         <MotionReveal><div className="mx-auto max-w-3xl text-center"><div className="mb-7 flex items-center justify-center gap-3"><span className="gold-dot" /><span className="text-sm font-bold text-[#214936]">ذكاء تشريعي قابل للتفسير</span></div>
           <p className="mb-3 text-lg font-bold">أثَر <span className="mr-2 text-xs tracking-[.22em]">ATHAR AI</span></p>
@@ -22,6 +23,11 @@ export default function Home() {
           <p className="mx-auto mt-8 max-w-xl text-lg leading-8 text-[#214936] sm:text-xl">قبل أن يتغير النص، اعرف ما الذي سيتغير معه. أثَر يحلل أثر التعديل ويربط كل إشارة بدليل.</p>
           <div className="mt-9 flex flex-wrap justify-center gap-3"><Link href="/analyze" className="primary-btn !px-5 !py-3">جرّب تحليل الأثر <span aria-hidden>←</span></Link><a href="#how" className="secondary-btn">شاهد سيناريو العرض</a></div>
           <p className="mt-8 text-xs text-[#345544]">يعمل نموذج العرض محليًا بالكامل • لا يحتاج إلى مفتاح AI أو إنترنت</p>
+          <div className="hero-proof" aria-label="خصائص أثَر الأساسية">
+            <div><strong>قابل للتفسير</strong><span>كل تنبيه يرافقه دليل</span></div>
+            <div><strong>مراجعة بشرية</strong><span>لا يصدر حكمًا قانونيًا نهائيًا</span></div>
+            <div><strong>عرض مباشر</strong><span>سيناريو جاهز للهاكاثون</span></div>
+          </div>
         </div></MotionReveal>
       </div>
     </section>
