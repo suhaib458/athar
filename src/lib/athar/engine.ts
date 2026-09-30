@@ -17,7 +17,7 @@ function articleEvidence(articleId: string, excerpt?: string): Evidence {
 }
 
 function ruleEvidence(id: string, excerpt: string): Evidence {
-  return { id, sourceId: id, sourceType: "rule", excerpt, sourceLabel: "قاعدة ATHAR الحتمية — بيانات تجريبية", isOfficial: false };
+  return { id, sourceId: id, sourceType: "rule", excerpt, sourceLabel: "قاعدة ATHAR الحتمية — بيانات النموذج الأولي", isOfficial: false };
 }
 
 export class AtharEngine {
@@ -37,7 +37,7 @@ export class AtharEngine {
     const definitionEvidence = articleEvidence("dp-01");
     addEvidence(definitionEvidence);
     if (termsNeedingReview.length > 0) {
-      alerts.push(alert("undefined-term", { type: "undefined_term", severity: "warning", title: "مصطلح يحتاج مراجعة", explanation: `لم يعثر محرك أثَر على تعريف تجريبي واضح للمصطلح: ${termsNeedingReview.slice(0, 2).join("، ")}. قد يحتاج إلى تعريف أو إحالة تشريعية.`, confidence: 78, sourceArticleIds: [target.id, "dp-01"], evidenceIds: [targetEvidence.id, definitionEvidence.id] }));
+      alerts.push(alert("undefined-term", { type: "undefined_term", severity: "warning", title: "مصطلح يحتاج مراجعة", explanation: `لم يعثر محرك أثَر على تعريف واضح للمصطلح: ${termsNeedingReview.slice(0, 2).join("، ")}. قد يحتاج إلى تعريف أو إحالة تشريعية.`, confidence: 78, sourceArticleIds: [target.id, "dp-01"], evidenceIds: [targetEvidence.id, definitionEvidence.id] }));
     }
 
     const referencePattern = /(?:المادة|مادة)\s*(\d+)/g;
@@ -46,7 +46,7 @@ export class AtharEngine {
     referencedNumbers.filter((number) => !knownNumbers.has(number)).forEach((number) => {
       const rule = ruleEvidence(`rule-reference-${number}`, "قاعدة التحقق من الإحالات: لا توجد المادة المشار إليها ضمن بيانات النموذج.");
       addEvidence(rule);
-      alerts.push(alert(`broken-reference-${number}`, { type: "broken_reference", severity: "critical", title: "إحالة تشريعية غير صالحة", explanation: `تشير المسودة إلى المادة ${number}، ولم يُعثر عليها ضمن مجموعة البيانات التجريبية المختارة.`, confidence: 98, sourceArticleIds: [target.id], evidenceIds: [targetEvidence.id, rule.id] }));
+      alerts.push(alert(`broken-reference-${number}`, { type: "broken_reference", severity: "critical", title: "إحالة تشريعية غير صالحة", explanation: `تشير المسودة إلى المادة ${number}، ولم يُعثر عليها ضمن مجموعة البيانات المختارة.`, confidence: 98, sourceArticleIds: [target.id], evidenceIds: [targetEvidence.id, rule.id] }));
     });
 
     const relations = target.relatedArticles;
@@ -95,7 +95,7 @@ export class AtharEngine {
     const impactedLegislationIds = unique(impactedArticleIds.map((id) => getArticle(id)?.legislationId).filter((id): id is string => Boolean(id)));
     const criticals = alerts.filter((item) => item.severity === "critical").length;
     const impactScore = criticals > 0 || impactedLegislationIds.length >= 3 ? "مرتفع" : alerts.length >= 2 ? "متوسط" : "منخفض";
-    return { id: "demo-retention-2026", legislationId: target.legislationId, targetArticleId: target.id, currentText: validated.currentText, proposedText: validated.proposedText, impactScore, impactedArticleIds, impactedLegislationIds, alerts, complianceImpacts, evidence: [...evidence.values()], summary: `رصد أثَر ${alerts.length} تنبيهًا قابلًا للتفسير و${complianceImpacts.length} آثار امتثال تحتاج مراجعة عبر ${impactedArticleIds.length} مادة ضمن بيانات تجريبية محلية.`, createdAt: new Date().toISOString() };
+    return { id: "demo-retention-2026", legislationId: target.legislationId, targetArticleId: target.id, currentText: validated.currentText, proposedText: validated.proposedText, impactScore, impactedArticleIds, impactedLegislationIds, alerts, complianceImpacts, evidence: [...evidence.values()], summary: `رصد أثَر ${alerts.length} تنبيهًا قابلًا للتفسير و${complianceImpacts.length} آثار امتثال تحتاج مراجعة عبر ${impactedArticleIds.length} مادة ضمن بيانات محلية.`, createdAt: new Date().toISOString() };
   }
 }
 

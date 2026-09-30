@@ -1,12 +1,12 @@
 import type { Legislation, LegislativeArticle } from "@/types/legislative";
 
-const demoSource = { type: "demo" as const, label: "بيانات تجريبية لأغراض النموذج الأولي" };
+const demoSource = { type: "demo" as const, label: "بيانات النموذج الأولي" };
 
 export const legislations: Legislation[] = [
-  { id: "data-protection", title: "تشريع حماية البيانات التجريبي", shortTitle: "حماية البيانات", type: "law", description: "إطار تجريبي لمعالجة البيانات الشخصية." },
-  { id: "data-management", title: "نظام إدارة البيانات التجريبي", shortTitle: "إدارة البيانات", type: "regulation", description: "ضوابط التخزين والسجلات وإدارة دورة البيانات." },
-  { id: "digital-privacy", title: "تعليمات الخصوصية الرقمية التجريبية", shortTitle: "الخصوصية الرقمية", type: "instruction", description: "تعليمات تشغيلية للشفافية والإشعار." },
-  { id: "administrative-procedures", title: "إجراءات إدارية تجريبية", shortTitle: "الإجراءات الإدارية", type: "procedure", description: "إجراءات عملية للمراجعة والحذف والتوثيق." },
+  { id: "data-protection", title: "تشريع حماية البيانات", shortTitle: "حماية البيانات", type: "law", description: "إطار لمعالجة البيانات الشخصية." },
+  { id: "data-management", title: "نظام إدارة البيانات", shortTitle: "إدارة البيانات", type: "regulation", description: "ضوابط التخزين والسجلات وإدارة دورة البيانات." },
+  { id: "digital-privacy", title: "تعليمات الخصوصية الرقمية", shortTitle: "الخصوصية الرقمية", type: "instruction", description: "تعليمات تشغيلية للشفافية والإشعار." },
+  { id: "administrative-procedures", title: "إجراءات إدارية", shortTitle: "الإجراءات الإدارية", type: "procedure", description: "إجراءات عملية للمراجعة والحذف والتوثيق." },
 ];
 
 export const demoArticles: LegislativeArticle[] = [
