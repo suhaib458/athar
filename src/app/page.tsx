@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FeatureIcon } from "@/components/visuals";
 import { MotionReveal } from "@/components/motion-reveal";
+import { PremiumPipeline, PremiumProcess } from "@/components/home-premium-sections";
 
 const features = [
   ["ATHAR Engine", "محرك التحليل", "يفحص التعديل بقواعد قابلة للتفسير ومراجع واضحة.", "◈"],
@@ -11,7 +12,8 @@ const features = [
 
 export default function Home() {
   return <main className="bottom-space overflow-hidden">
-    <section className="hero-reference py-16 sm:py-24">
+    <section className="hero-reference premium-hero py-16 sm:py-24">
+      <div className="hero-data-layer" aria-hidden><span /><span /><span /><i /><i /><i /></div>
       <div className="grid-pattern absolute inset-0" /><div className="absolute -left-28 top-8 size-80 rounded-full bg-[var(--emerald)] opacity-10 blur-3xl" /><div className="absolute bottom-0 right-0 size-80 rounded-full bg-[#c69a38] opacity-10 blur-3xl" />
       <div className="shell relative max-w-4xl">
         <MotionReveal><div className="mx-auto max-w-3xl text-center"><div className="mb-7 flex items-center justify-center gap-3"><span className="gold-dot" /><span className="text-sm font-bold text-[#214936]">ذكاء تشريعي قابل للتفسير</span></div>
@@ -23,8 +25,8 @@ export default function Home() {
         </div></MotionReveal>
       </div>
     </section>
-    <section className="shell py-20 sm:py-28"><div className="grid gap-10 lg:grid-cols-2 lg:items-end"><div><p className="eyebrow">المشكلة</p><h2 className="section-title mt-3">التشريع ليس وثيقة منفصلة.</h2></div><p className="max-w-xl text-lg leading-8 text-[var(--muted)]">العلاقات بين المواد والتشريعات والأنظمة والإجراءات غالبًا غير مرئية عند مراجعة تعديل واحد. والنتيجة: وقت أطول، ومخاطر يصعب شرحها، وأثر لا يظهر إلا متأخرًا.</p></div><div className="mt-12 grid gap-4 md:grid-cols-3"><div className="card p-6"><b className="text-3xl text-[var(--emerald)]">01</b><p className="mt-6 font-bold">نصوص متفرقة</p><p className="mt-2 text-sm leading-6 text-[var(--muted)]">مصادر وصيغ وإحالات موزعة بين طبقات مختلفة.</p></div><div className="card p-6"><b className="text-3xl text-[var(--gold)]">02</b><p className="mt-6 font-bold">أثر مخفي</p><p className="mt-2 text-sm leading-6 text-[var(--muted)]">قد يرتبط التعديل بالحذف والإشعار والسجل دون أن يظهر فورًا.</p></div><div className="card p-6"><b className="text-3xl text-[var(--emerald)]">03</b><p className="mt-6 font-bold text-[var(--ink)]">قرار أوضح</p><p className="mt-2 text-sm leading-6 text-[var(--ink)]">أثَر يرسم شبكة الأدلة قبل أن يفسرها.</p></div></div></section>
-    <section id="how" className="bg-[#eaf2ef] py-20 sm:py-28"><div className="shell"><div className="max-w-2xl"><p className="eyebrow">كيف يعمل ATHAR</p><h2 className="section-title mt-3">نبني العلاقة أولًا، ثم نفسّر أثرها.</h2></div><div className="mt-12 grid gap-3 md:grid-cols-4">{[["01", "اختَر نصًا", "أدخل النص الحالي والتعديل المقترح."], ["02", "حلّل القواعد", "يفحص المحرك المصطلحات والإحالات والاعتمادات."], ["03", "ارسم الأثر", "تظهر المواد المرتبطة في شبكة تفاعلية."], ["04", "راجع الدليل", "كل تنبيه يشرح سببه ومصدره التجريبي."]].map(([n, t, d]) => <div key={n} className="relative card p-6"><span className="text-sm font-black text-[var(--gold)]">{n}</span><h3 className="mt-8 text-lg font-bold">{t}</h3><p className="mt-2 text-sm leading-6 text-[var(--muted)]">{d}</p></div>)}</div></div></section>
+    <PremiumProcess />
+    <PremiumPipeline />
     <section className="shell py-20 sm:py-28"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="eyebrow">منظومة أثَر</p><h2 className="section-title mt-3">واجهة واحدة، مكوّنات مترابطة.</h2></div><Link className="secondary-btn" href="/analyze">جرّب النموذج ←</Link></div><div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{features.map(([english, arabic, text, glyph]) => <article className="card p-6" key={english}><FeatureIcon glyph={glyph} /><p className="mt-6 text-xs font-bold tracking-[.12em] text-[var(--emerald)]">{english}</p><h3 className="mt-1 text-lg font-black">{arabic}</h3><p className="mt-3 text-sm leading-6 text-[var(--muted)]">{text}</p></article>)}</div></section>
     <section className="shell py-20 text-center sm:py-28"><p className="eyebrow">الذكاء الاصطناعي في القانون</p><h2 className="section-title mx-auto mt-3 max-w-2xl">محرك ذكاء تشريعي لتحليل أثر التعديلات والامتثال.</h2><p className="mx-auto mt-4 max-w-xl leading-7 text-[var(--muted)]">ATHAR AI منصة دعم قرار: تحدد العلاقة، وتربطها بدليل، وتُظهر ما قد يحتاج مراجعة بشرية قبل اعتماد النص.</p><Link href="/analyze" className="primary-btn mt-8">حلّل سيناريو العرض ←</Link></section>
   </main>;

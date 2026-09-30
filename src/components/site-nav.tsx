@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const navItems = [
@@ -11,9 +12,21 @@ const navItems = [
 
 export function SiteNav() {
   const pathname = usePathname();
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const update = () => {
+      const height = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(height > 0 ? Math.min(100, (window.scrollY / height) * 100) : 0);
+      setScrolled(window.scrollY > 14);
+    };
+    update(); window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
   const current = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
   return <>
-    <header className="site-header">
+    <header className={`site-header ${scrolled ? "site-header-scrolled" : ""}`}>
+      <span className="scroll-progress" style={{ transform: `scaleX(${scrollProgress / 100})` }} aria-hidden />
       <div className="site-ribbon" aria-hidden><span /><span /><span /></div>
       <div className="shell flex h-[76px] items-center justify-between gap-4 sm:gap-6">
         <Link href="/" className="flex items-center gap-3 text-[var(--ink)] no-underline" aria-label="أثَر - الصفحة الرئيسية">
