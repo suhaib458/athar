@@ -1,3 +1,11 @@
-import { AnalyzeStudio } from "@/features/analysis/analyze-studio";
+import { AnalyzeStudio, StudioIcon } from "@/features/analysis/analyze-studio";
 
-export default function AnalyzePage() { return <main className="bottom-space shell py-10 sm:py-16"><div className="mb-8"><p className="eyebrow">ATHAR ENGINE / محرك التحليل</p><p className="mt-3 max-w-2xl leading-7 text-[var(--muted)]">أدخل التعديل، ثم شاهد المواد التي قد تمتد إليها آثاره. ابدأ بسيناريو الاحتفاظ بالبيانات لتجربة النموذج.</p></div><AnalyzeStudio /></main>; }
+export default function AnalyzePage() {
+  return <main className="bottom-space legal-studio-page">
+    <section className="studio-hero">
+      <div className="legal-architecture" aria-hidden><div className="architecture-pediment" /><div className="architecture-columns"><i /><i /><i /><i /></div><div className="architecture-scales"><StudioIcon scales /></div></div>
+      <div className="shell studio-hero-content"><p className="eyebrow">ATHAR ENGINE / محرك التحليل</p><div className="studio-title"><span><StudioIcon scales /></span><h1>حلّل الأثر التشريعي</h1></div><p>مساحة عمل ATHAR تقرأ التعديل وتربطه بإشارات قابلة للتفسير.</p></div>
+    </section>
+    <div className="shell studio-form-shell"><AnalyzeStudio /></div>
+  </main>;
+}

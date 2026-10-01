@@ -25,7 +25,7 @@ export function SiteNav() {
   }, []);
   const current = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
   return <>
-    <header className={`site-header ${scrolled ? "site-header-scrolled" : ""}`}>
+    <header className={`site-header ${pathname === "/analyze" ? "studio-site-header" : ""} ${scrolled ? "site-header-scrolled" : ""}`}>
       <span className="scroll-progress" style={{ transform: `scaleX(${scrollProgress / 100})` }} aria-hidden />
       <div className="site-ribbon" aria-hidden><span /><span /><span /></div>
       <div className="shell flex h-[76px] items-center justify-between gap-4 sm:gap-6">

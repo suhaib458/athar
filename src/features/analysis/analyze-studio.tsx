@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { legislations, retentionDemo } from "@/data/demo-legislation";
 import { atharEngine } from "@/lib/athar/engine";
+
+export function StudioIcon({ scales = false }: { scales?: boolean }) {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{scales ? <><path d="M12 3v17M5 21h14M4 7h16M5 7l-3 7h6L5 7Zm14 0-3 7h6l-3-7Z"/><path d="M2 14c1 3 5 3 6 0m8 0c1 3 5 3 6 0"/></> : <><path d="M14 2H5v20h14V7l-5-5Z"/><path d="M14 2v6h5M8 12h8M8 16h8"/></>}</svg>;
+}
 
 export function AnalyzeStudio() {
   const router = useRouter();
@@ -12,16 +16,34 @@ export function AnalyzeStudio() {
   const [proposedText, setProposedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [analysisStage, setAnalysisStage] = useState(0);
+  const timers = useRef<number[]>([]);
+  const menu = useRef<HTMLDetailsElement>(null);
+  useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
   const useDemo = () => { setLegislationId("data-protection"); setCurrentText(retentionDemo.currentText); setProposedText(retentionDemo.proposedText); };
-  const completeAnalysis = (analysis: ReturnType<typeof atharEngine.analyze>) => {
-    setIsLoading(true);
-    setAnalysisStage(0);
-    [1, 2, 3].forEach((stage, index) => window.setTimeout(() => setAnalysisStage(stage), 280 + index * 300));
-    window.setTimeout(() => { window.sessionStorage.setItem("athar-demo-analysis", JSON.stringify(analysis)); router.push(`/analysis/${analysis.id}`); }, 1350);
-  };
   const analyze = () => {
-    completeAnalysis(atharEngine.analyze({ targetArticleId: "dp-12", currentText: currentText || retentionDemo.currentText, proposedText: proposedText || retentionDemo.proposedText }));
+    if (isLoading) return;
+    const analysis = atharEngine.analyze({ targetArticleId: "dp-12", currentText: currentText || retentionDemo.currentText, proposedText: proposedText || retentionDemo.proposedText });
+    setIsLoading(true); setAnalysisStage(0);
+    timers.current = [1, 2, 3].map((stage, index) => window.setTimeout(() => setAnalysisStage(stage), 280 + index * 300));
+    timers.current.push(window.setTimeout(() => { window.sessionStorage.setItem("athar-demo-analysis", JSON.stringify(analysis)); router.push(`/analysis/${analysis.id}`); }, 1350));
   };
   const stages = ["جارٍ قراءة النص التشريعي…", "جارٍ استخراج المواد…", "جارٍ تحليل العلاقات…", "جارٍ بناء الأثر…"];
-  return <section className="card workspace-card overflow-hidden"><div className="flex flex-col justify-between gap-4 border-b border-[var(--line)] bg-[#fbf9f4]/80 p-5 sm:flex-row sm:items-center sm:p-7"><div><span className="tag tag-demo">بيانات النموذج الأولي</span><h1 className="mt-3 text-2xl font-black text-[var(--navy)] sm:text-3xl">حلّل الأثر التشريعي</h1><p className="mt-2 text-sm text-[var(--muted)]">مساحة عمل ATHAR تقرأ التعديل وتربطه بإشارات قابلة للتفسير.</p></div><div className="flex flex-wrap gap-2"><button className="secondary-btn shrink-0" type="button" onClick={useDemo} disabled={isLoading}>استخدم سيناريو العرض <span aria-hidden>↙</span></button></div></div><div className="p-5 sm:p-7">{isLoading && <div className="mb-6 rounded-2xl border border-[#cfe3d7] bg-[#f4fbf6] p-4" role="status" aria-live="polite"><div className="flex items-center justify-between gap-3"><strong className="text-sm text-[var(--navy)]">{stages[analysisStage]}</strong><span className="text-xs font-bold text-[var(--emerald)]">ATHAR</span></div><div className="analysis-status mt-4">{stages.map((stage, index) => <span key={stage} className={index <= analysisStage ? "!border-[#83bea0] !text-[var(--emerald)]" : ""}>{index + 1}</span>)}</div></div>}<label className="mb-2 block text-sm font-bold" htmlFor="legislation">التشريع</label><select id="legislation" className="field mb-6" value={legislationId} onChange={(event) => setLegislationId(event.target.value)} disabled={isLoading}>{legislations.map((item) => <option key={item.id} value={item.id}>{item.title}</option>)}</select><div className="grid gap-5 lg:grid-cols-2"><div><label className="mb-2 block text-sm font-bold" htmlFor="current-text">النص الحالي</label><textarea id="current-text" className="field min-h-45 resize-y leading-8" value={currentText} onChange={(event) => setCurrentText(event.target.value)} placeholder="الصق النص الحالي هنا، أو استخدم سيناريو العرض." disabled={isLoading} /></div><div><label className="mb-2 block text-sm font-bold" htmlFor="proposed-text">التعديل المقترح</label><textarea id="proposed-text" className="field min-h-45 resize-y leading-8" value={proposedText} onChange={(event) => setProposedText(event.target.value)} placeholder="اكتب الصياغة المقترحة هنا." disabled={isLoading} /></div></div><div className="mt-6 flex flex-col items-start justify-between gap-4 border-t border-[var(--line)] pt-5 sm:flex-row sm:items-center"><p className="max-w-xl text-xs leading-5 text-[var(--muted)]">لا يقدّم أثَر رأيًا قانونيًا نهائيًا؛ يعرض إشارات للمراجعة ومدى اتصالها ببيانات النموذج الأولي.</p><button className="primary-btn min-w-55" type="button" onClick={analyze} disabled={isLoading}>{isLoading ? stages[analysisStage] : "حلّل الأثر التشريعي"} <span aria-hidden>←</span></button></div></div></section>;
+  return <section className="legal-workspace" aria-label="مساحة تحليل الأثر">
+    <div className="studio-legislation">
+      <span className="studio-label" id="legislation-label"><span className="studio-icon"><StudioIcon /></span>التشريع</span>
+      <details className="legislation-menu" ref={menu} onKeyDown={event => { if (event.key === "Escape" && menu.current) { menu.current.open = false; menu.current.querySelector("summary")?.focus(); } }}>
+        <summary aria-labelledby="legislation-label legislation-value" aria-disabled={isLoading} onClick={event => { if (isLoading) event.preventDefault(); }}><StudioIcon /><span id="legislation-value">{legislations.find(item => item.id === legislationId)?.title}</span><span className="menu-chevron" aria-hidden>⌄</span></summary>
+        <fieldset className="legislation-options" disabled={isLoading}><legend className="sr-only">اختر التشريع</legend>{legislations.map(item => <label key={item.id}><input type="radio" name="legislation" value={item.id} checked={legislationId === item.id} onChange={() => { setLegislationId(item.id); if (menu.current) { menu.current.open = false; menu.current.querySelector("summary")?.focus(); } }} /><span>{item.title}</span><span className="option-check" aria-hidden>✓</span></label>)}</fieldset>
+      </details>
+    </div>
+    <div className="studio-editors">
+      {[{ id: "current-text", title: "النص الحالي", value: currentText, update: setCurrentText, placeholder: "الصق النص الحالي هنا، أو استخدم سيناريو العرض.", hint: "أدخل النص الحالي للتشريع المراد تحليله." }, { id: "proposed-text", title: "التعديل المقترح", value: proposedText, update: setProposedText, placeholder: "اكتب الصياغة المقترحة هنا.", hint: "صف التعديل أو الصياغة الجديدة المقترحة." }].map(field => <div className="studio-editor" key={field.id}>
+        <div className="editor-heading"><label className="studio-label" htmlFor={field.id}><span className="studio-icon"><StudioIcon /></span>{field.title}{field.value.trim() && <span className="editor-check" aria-label="النص مُدخل">✓</span>}</label>{field.id === "current-text" && <button className="fill-example" type="button" onClick={useDemo} disabled={isLoading}>تعبئة مثال</button>}</div>
+        <textarea id={field.id} className="studio-textarea" rows={7} maxLength={5000} value={field.value} onChange={event => field.update(event.target.value)} placeholder={field.placeholder} disabled={isLoading} aria-describedby={`${field.id}-hint ${field.id}-count`} />
+        <div className="editor-caption"><span id={`${field.id}-hint`}>{field.hint}</span><span id={`${field.id}-count`} dir="ltr">{field.value.length} / 5000</span></div>
+      </div>)}
+    </div>
+    <div className="studio-actions"><p><span aria-hidden>◇</span>لا يقدّم أثَر رأيًا قانونيًا نهائيًا؛ يعرض إشارات للمراجعة ومدى اتصالها ببيانات النموذج الأولي.</p><button className="studio-submit" type="button" onClick={analyze} disabled={isLoading}>{isLoading ? <span className="studio-loader" aria-hidden /> : <span aria-hidden>✧</span>}{isLoading ? "جارٍ تحليل الأثر…" : "حلّل الأثر التشريعي"}<span aria-hidden>←</span></button></div>
+    <div className="studio-status" role="status" aria-live="polite">{isLoading && <><span>{stages[analysisStage]}</span><div className="studio-stage-track">{stages.map((stage, index) => <span key={stage} className={index <= analysisStage ? "complete" : ""} />)}</div></>}</div>
+  </section>;
 }
