@@ -43,7 +43,7 @@ export function AnalyzeStudio() {
         <div className="editor-caption"><span id={`${field.id}-hint`}>{field.hint}</span><span id={`${field.id}-count`} dir="ltr">{field.value.length} / 5000</span></div>
       </div>)}
     </div>
-    <div className="studio-actions"><p><span aria-hidden>◇</span>لا يقدّم أثَر رأيًا قانونيًا نهائيًا؛ يعرض إشارات للمراجعة ومدى اتصالها ببيانات النموذج الأولي.</p><button className="studio-submit" type="button" onClick={analyze} disabled={isLoading}>{isLoading ? <span className="studio-loader" aria-hidden /> : <span aria-hidden>✧</span>}{isLoading ? "جارٍ تحليل الأثر…" : "حلّل الأثر التشريعي"}<span aria-hidden>←</span></button></div>
+    <div className="studio-actions"><button className="studio-submit" type="button" onClick={analyze} disabled={isLoading}>{isLoading ? <span className="studio-loader" aria-hidden /> : <span aria-hidden>✧</span>}{isLoading ? "جارٍ تحليل الأثر…" : "حلّل الأثر التشريعي"}<span aria-hidden>←</span></button></div>
     <div className="studio-status" role="status" aria-live="polite">{isLoading && <><span>{stages[analysisStage]}</span><div className="studio-stage-track">{stages.map((stage, index) => <span key={stage} className={index <= analysisStage ? "complete" : ""} />)}</div></>}</div>
   </section>;
 }

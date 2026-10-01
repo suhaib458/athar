@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Compact controls and the supplied transparent brand asset. */
+.legal-workspace .legislation-menu summary { min-height:46px; padding:10px 16px; border-radius:12px; font-size:.9rem; }
+.legal-workspace .studio-actions { justify-content:flex-end; }
+.site-header .brand-mark { background:transparent; border-radius:0; }
+
 /* Legal workspace: scoped palette and motion keep other pages unchanged. */
 .legal-studio-page { --emerald:#006a4e; --navy:#004b39; --ink:#12372f; --muted:#71817d; --gold:#d4ae62; background:#fbf8f0; color:var(--ink); padding-bottom:60px; min-height:90vh; overflow:clip; }
 .site-header.studio-site-header { background:rgba(255,253,247,.76); backdrop-filter:blur(18px); box-shadow:0 8px 28px rgba(18,55,47,.04); }
